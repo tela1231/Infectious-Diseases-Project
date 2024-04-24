@@ -152,40 +152,21 @@ if __name__ == "__main__":
 
     print(graph_values[1])
 
-"""
-    I_t = np.linspace(t0, tn, 100)
-
-    h_values = [2, 1, 1/2 , 1/4, 1/8, 1/16, 1/32]
-    error_values = []
-
-    for i in range(len(h_values)):
-        error_values.append(E(h_values[i]))
-
-    ##store values
-    t_values, S_values, I_values = graph_values
+    
+    t_values, S_values, EOV_values, EOT_values, EW_values, IOV_values, IOT_values, IW_values, ROV_values, ROT_values, RW_values = graph_values
 
 
     out_file = "i Plot"
-    out_file2 = "E Plot"
 
-    plt.plot(t_values, I_values, color = 'red')
-    plt.plot(I_t, I(I_t, I0), color = 'black', linestyle = '--')
-
-    plt.ylim(0, 0.5)
+    plt.plot(t_values, IW_values, color = 'red')
 
     plt.xlabel('Time')
     plt.ylabel('I/N')
     plt.title('Forward Euler vs Analytical soln of i')
-    plt.legend(['Forward Euler', 'Analytical'])
 
     plt.figure()
 
-    plt.loglog(h_values, error_values, marker = 'o')
-    plt.xlabel('Step sizes')
-    plt.ylabel("Maximum Absolute Error")
-    plt.title('Log-log of Max Absolute Error vs Step Size')
 
     plt.show()
 
     plt.savefig(out_file,bbox_inches='tight')
-"""
