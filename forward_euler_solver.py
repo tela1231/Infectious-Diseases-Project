@@ -65,108 +65,106 @@ def forward_euler(f, E_OV, E_OT, E_W, I_OV, I_OT, I_W, R_OV, R_OT, R_W, S0, E0_O
 
 ##S I and R functions
 def S_dot(t, S, I_OV, I_OT, I_W):
-    B = 3
-    vR = 2
-    p = 1
+    B = 0.151
+    vR = ((0.8) * (0.074))
+    p = 0.37
     value = -(B * S * p)* (I_OV +I_OT) - (B * S * I_W) - (vR * S)
 
     return value
 
 def I_OV(t, E_OV, I_OV):
-    alp = 1
-    gamma = 1
+    alp = 0.25
+    gamma = 0.93
     value = (alp * E_OV) - (gamma * I_OV) 
 
     return value
 
 def I_OT(t, E_OT, I_OT, I_OV):
-    alp = 1
-    gamma = 1
+    alp = 0.25
+    gamma = 0.93
     value = (alp * E_OT) - (gamma * (I_OV +I_OT)) 
 
     return value
 
 def I_W(t, E_W, I_W):
-    alp = 1
-    gamma = 1
+    alp = 0.25
+    gamma = 0.93
     value = (alp * E_W) - (gamma * I_W) 
 
     return value
 
 def E_OV(t, S, E_OV):
-    alp = 1
-    vR = 1
+    alp = 0.25
+    vR = ((0.8) * (0.074))
     value = (vR * S) - (alp * E_OV) 
 
     return value
 
 def E_OT(t, S, E_OT, I_OV, I_OT):
-    alp = 1
-    B = 1
-    p = 1
+    alp = 0.25
+    B = 0.151
+    p = 0.37
     value = (p * B * S) * (I_OV + I_OT) - (alp * E_OT) 
 
     return value
 
 def E_W(t, S, E_W, I_W):
-    alp = 1
-    B = 1
+    alp = 0.25
+    B = 0.151
     value = (B * S * I_W) - (alp * E_W) 
 
     return value
 
 def R_OV(t, I_OV):
-    gamma = 1
+    gamma = 0.93
     value = gamma * I_OV
 
     return value
 
 def R_OT(t, I_OT):
-    gamma = 1
+    gamma = 0.93
     value = gamma * I_OT
     return value
 
 def R_W(t, I_W):
-    gamma = 1
+    gamma = 0.93
     value = gamma * I_W
     return value
 
 if __name__ == "__main__":
     ##define int variables
-    S0 = 1
+    S0 = 0.99
 
-    E0_OV = 1
-    E0_OT = 1
-    E0_W = 1
+    E0_OV = 0
+    E0_OT = 0
+    E0_W = .001
 
-    I0_OV = 1
-    I0_OT = 1
-    I0_W = 1
+    I0_OV = 0
+    I0_OT = 0
+    I0_W = (1.2161) * (10 ** -4)
 
     t0 = 0
-    tn = 10
+    tn = 295
     h = 1
 
     ##use function
     graph_values = forward_euler(S_dot, E_OV, E_OT, E_W, I_OV, I_OT, I_W, R_OV, R_OT, R_W, S0, E0_OV, E0_OT, E0_W, I0_OV, I0_OT, I0_W, t0, tn, h)
 
-    print(graph_values[1])
 
     
     t_values, S_values, EOV_values, EOT_values, EW_values, IOV_values, IOT_values, IW_values, ROV_values, ROT_values, RW_values = graph_values
 
+    print(t_values)
+    print(IW_values)
 
-    out_file = "i Plot"
+
+    out_file = "iw Plot"
 
     plt.plot(t_values, IW_values, color = 'red')
 
-    plt.xlabel('Time')
-    plt.ylabel('I/N')
-    plt.title('Forward Euler vs Analytical soln of i')
+  
 
-    plt.figure()
-
+    plt.savefig(out_file,bbox_inches='tight')
 
     plt.show()
 
-    plt.savefig(out_file,bbox_inches='tight')
