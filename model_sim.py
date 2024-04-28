@@ -182,9 +182,9 @@ plt.close()
 
 # Plot IW, IOT, and IOV
 plt.figure(figsize=(10, 6))
-plt.plot(date_range, IW_values, color='green', label='IW')
-plt.plot(date_range, IOT_values, color='orange', label='IOT')
-plt.plot(date_range, IOV_values, color='blue', label='IOV')
+plt.plot(date_range, IW_values, color='red', label='IW')
+plt.plot(date_range, IOT_values, color='blue', label='IOT')
+plt.plot(date_range, IOV_values, linestyle='dashed', color='blue', label='IOV')
 plt.xlabel('Date')
 plt.ylabel('Fraction Infectious')
 plt.title('Infected Population')
@@ -239,12 +239,13 @@ plt.close()
 
 # Plot y_w_model
 plt.figure(figsize=(10, 6))
-plt.plot(date_range, y_w_model, color='blue')
-plt.scatter(WPV1_dates, y_w_data, color='red', marker='o')  # Scatter plot of parsed data
+plt.plot(date_range, y_w_model, color='blue', label='Model')
+plt.scatter(WPV1_dates, y_w_data, color='red', marker='o', label='Data')  # Scatter plot of parsed data
 
 plt.xlabel('Date')
 plt.ylabel('PCR Cycle Threshold')
 plt.title('WPV1 PCR Cycle Threshold vs Date')
+plt.legend()
 plt.grid(True)
 plt.gca().invert_yaxis()  # Invert the y-axis
 plt.ylim(60, 20)  # Set y-axis limits from 20 to 60
@@ -259,12 +260,13 @@ plt.close()
 
 # Plot y_o_model
 plt.figure(figsize=(10, 6))
-plt.plot(date_range, y_o_model, color='blue')
-plt.scatter(OPV1_dates, y_o_data, color='red', marker='o')  # Scatter plot of parsed data
+plt.plot(date_range, y_o_model, color='blue', label='Model')
+plt.scatter(OPV1_dates, y_o_data, color='red', marker='o', label='Data')  # Scatter plot of parsed data
 
 plt.xlabel('Date')
 plt.ylabel('PCR Cycle Threshold')
 plt.title('OPV1 PCR Cycle Threshold vs Date')
+plt.legend()
 plt.grid(True)
 plt.gca().invert_yaxis()  # Invert the y-axis
 plt.ylim(60, 20)  # Set y-axis limits from 20 to 60
