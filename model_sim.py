@@ -4,6 +4,10 @@ import matplotlib.pyplot as plt
 import math
 import matplotlib.dates as mdates
 from datetime import datetime, timedelta
+import csv
+import data_parser as parser
+import datetime
+
 
 
 
@@ -130,17 +134,33 @@ RW_values = y_values[9]
 Io_values = IOT_values + IOV_values
 
 # Add function for cycle thresholds
-y_w = calculate_y(sewage_scaling_w, IW_values)
-y_o = calculate_y(sewage_scaling_o, Io_values)
+y_w_model = calculate_y(sewage_scaling_w, IW_values)
+y_o_model = calculate_y(sewage_scaling_o, Io_values)
+
+# Parse WPV1.csv
+WPV1_header, WPV1_data = parser.parse_csv("WPV1.csv")
+WPV1_data_dates = [row[0] for row in WPV1_data]  # Assuming the dates are in the first column
+y_w_data = [float(row[1]) for row in WPV1_data]  # Assuming the values are in the second column
+
+reference_date = datetime.datetime(2013, 3, 11)
+WPV1_dates = [reference_date + datetime.timedelta(days=int(day)) for day in WPV1_data_dates]
+
+# Parse OPV1.csv
+OPV1_header, OPV1_data = parser.parse_csv("OPV1.csv")
+OPV1_data_dates = [row[0] for row in OPV1_data]  # Assuming the dates are in the first column
+y_o_data = [float(row[1]) for row in OPV1_data]  # Assuming the values are in the second column
+
+OPV1_reference_date = datetime.datetime(2013, 8, 5)
+OPV1_dates = [OPV1_reference_date + datetime.timedelta(days=int(day)) for day in OPV1_data_dates]
+
 
 # Define start and end dates
-start_date = datetime(2013, 3, 11)
-end_date = datetime(2013, 12, 31)
+start_date = datetime.datetime(2013, 3, 11)
+end_date = datetime.datetime(2013, 12, 31)
 
 # Convert numerical values of t_values to dates
 num_days = 295
 date_range = [start_date + timedelta(days=int(t)) for t in np.linspace(0, num_days, len(t_values))]
-
 
 # Plotting and saving each variable separately
 
@@ -217,9 +237,11 @@ plt.gca().xaxis.set_major_locator(mdates.MonthLocator())
 plt.savefig('Recovered_plot.png', bbox_inches='tight')
 plt.close()
 
-# Plot y_w
+# Plot y_w_model
 plt.figure(figsize=(10, 6))
-plt.plot(date_range, y_w, color='blue')
+plt.plot(date_range, y_w_model, color='blue')
+plt.scatter(WPV1_dates, y_w_data, color='red', marker='o')  # Scatter plot of parsed data
+
 plt.xlabel('Date')
 plt.ylabel('PCR Cycle Threshold')
 plt.title('WPV1 PCR Cycle Threshold vs Date')
@@ -235,9 +257,11 @@ plt.gca().xaxis.set_major_locator(mdates.MonthLocator())
 plt.savefig('yw_plot.png', bbox_inches='tight')
 plt.close()
 
-# Plot y_o
+# Plot y_o_model
 plt.figure(figsize=(10, 6))
-plt.plot(date_range, y_o, color='blue')
+plt.plot(date_range, y_o_model, color='blue')
+plt.scatter(OPV1_dates, y_o_data, color='red', marker='o')  # Scatter plot of parsed data
+
 plt.xlabel('Date')
 plt.ylabel('PCR Cycle Threshold')
 plt.title('OPV1 PCR Cycle Threshold vs Date')
