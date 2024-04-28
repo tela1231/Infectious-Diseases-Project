@@ -28,6 +28,18 @@ def equations(t, y, beta, rho, sigma, gamma):
 
     return [S_dot, IOV_dot, IOT_dot, IW_dot, EOV_dot, EOT_dot, EW_dot, ROV_dot, ROT_dot, RW_dot]
 
+def calculate_y(variable, I_values):
+    y_values = []
+    for I in I_values:
+        if I != 0:  # Check if I is not zero
+            y_values.append(math.log2(variable / I))
+        else:
+            # Handle the case where I is zero (for example, set y to 60)
+            y_values.append(60)
+    return y_values
+
+
+
 def find_closest_index(numbers, target):
     closest_index = None
     min_difference = float('inf')  # Initialize with positive infinity
@@ -113,8 +125,11 @@ EW_values = y_values[6]
 ROV_values = y_values[7]
 ROT_values = y_values[8]
 RW_values = y_values[9]
+Io_values = IOT_values + IOV_values
 
-
+# Add function for cycle thresholds
+y_w = calculate_y(sewage_scaling_w, IW_values)
+y_o = calculate_y(sewage_scaling_o, Io_values)
 
 # Plotting and saving each variable separately
 
@@ -165,4 +180,28 @@ plt.title('Recovered Population')
 plt.legend()
 plt.grid(True)
 plt.savefig('Recovered_plot.png', bbox_inches='tight')
+plt.close()
+
+# Plot y_w
+plt.figure(figsize=(10, 6))
+plt.plot(t_values, y_w, color='blue')
+plt.xlabel('Time')
+plt.ylabel('PCR Cycle Threshold')
+plt.title('WPV1 PCR Cycle Threshold vs Time')
+plt.grid(True)
+plt.gca().invert_yaxis()  # Invert the y-axis
+plt.ylim(60, 20)  # Set y-axis limits from 20 to 60
+plt.savefig('yw_plot.png', bbox_inches='tight')
+plt.close()
+
+# Plot y_o
+plt.figure(figsize=(10, 6))
+plt.plot(t_values, y_o, color='blue')
+plt.xlabel('Time')
+plt.ylabel('PCR Cycle Threshold')
+plt.title('OPV1 PCR Cycle Threshold vs Time')
+plt.grid(True)
+plt.gca().invert_yaxis()  # Invert the y-axis
+plt.ylim(60, 20)  # Set y-axis limits from 20 to 60
+plt.savefig('yo_plot.png', bbox_inches='tight')
 plt.close()
