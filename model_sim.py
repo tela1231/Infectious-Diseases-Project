@@ -2,6 +2,8 @@ import numpy as np
 from scipy.integrate import solve_ivp
 import matplotlib.pyplot as plt
 import math
+import matplotlib.dates as mdates
+from datetime import datetime, timedelta
 
 
 
@@ -131,77 +133,122 @@ Io_values = IOT_values + IOV_values
 y_w = calculate_y(sewage_scaling_w, IW_values)
 y_o = calculate_y(sewage_scaling_o, Io_values)
 
+# Define start and end dates
+start_date = datetime(2013, 3, 11)
+end_date = datetime(2013, 12, 31)
+
+# Convert numerical values of t_values to dates
+num_days = 295
+date_range = [start_date + timedelta(days=int(t)) for t in np.linspace(0, num_days, len(t_values))]
+
+
 # Plotting and saving each variable separately
 
 # Plot S
 plt.figure(figsize=(10, 6))
-plt.plot(t_values, S_values, color='blue')
-plt.xlabel('Time')
+plt.plot(date_range, S_values, color='blue')
+plt.xlabel('Date')
 plt.ylabel('Population')
 plt.title('Susceptible Population')
 plt.grid(True)
+
+# Set date format on x-axis
+date_format = mdates.DateFormatter('%Y-%m')
+plt.gca().xaxis.set_major_formatter(date_format)
+plt.gca().xaxis.set_major_locator(mdates.MonthLocator())
+
 plt.savefig('S_plot.png', bbox_inches='tight')
 plt.close()
 
 # Plot IW, IOT, and IOV
 plt.figure(figsize=(10, 6))
-plt.plot(t_values, IW_values, color='green', label='IW')
-plt.plot(t_values, IOT_values, color='orange', label='IOT')
-plt.plot(t_values, IOV_values, color='blue', label='IOV')
-plt.xlabel('Time')
+plt.plot(date_range, IW_values, color='green', label='IW')
+plt.plot(date_range, IOT_values, color='orange', label='IOT')
+plt.plot(date_range, IOV_values, color='blue', label='IOV')
+plt.xlabel('Date')
 plt.ylabel('Population')
 plt.title('Infected Population')
 plt.legend()
 plt.grid(True)
+
+# Set date format on x-axis
+date_format = mdates.DateFormatter('%Y-%m')
+plt.gca().xaxis.set_major_formatter(date_format)
+plt.gca().xaxis.set_major_locator(mdates.MonthLocator())
+
 plt.savefig('Infected_plot.png', bbox_inches='tight')
 plt.close()
 
 # Plot EW, EOT, and EOV
 plt.figure(figsize=(10, 6))
-plt.plot(t_values, EW_values, color='green', label='EW')
-plt.plot(t_values, EOT_values, color='orange', label='EOT')
-plt.plot(t_values, EOV_values, color='blue', label='EOV')
-plt.xlabel('Time')
+plt.plot(date_range, EW_values, color='green', label='EW')
+plt.plot(date_range, EOT_values, color='orange', label='EOT')
+plt.plot(date_range, EOV_values, color='blue', label='EOV')
+plt.xlabel('Date')
 plt.ylabel('Population')
 plt.title('Exposed Population')
 plt.legend()
 plt.grid(True)
+
+# Set date format on x-axis
+date_format = mdates.DateFormatter('%Y-%m')
+plt.gca().xaxis.set_major_formatter(date_format)
+plt.gca().xaxis.set_major_locator(mdates.MonthLocator())
+
 plt.savefig('Exposed_plot.png', bbox_inches='tight')
 plt.close()
 
 # Plot RW, ROT, and ROV
 plt.figure(figsize=(10, 6))
-plt.plot(t_values, RW_values, color='green', label='RW')
-plt.plot(t_values, ROT_values, color='orange', label='ROT')
-plt.plot(t_values, ROV_values, color='blue', label='ROV')
-plt.xlabel('Time')
+plt.plot(date_range, RW_values, color='green', label='RW')
+plt.plot(date_range, ROT_values, color='orange', label='ROT')
+plt.plot(date_range, ROV_values, color='blue', label='ROV')
+plt.xlabel('Date')
 plt.ylabel('Population')
 plt.title('Recovered Population')
 plt.legend()
 plt.grid(True)
+
+# Set date format on x-axis
+date_format = mdates.DateFormatter('%Y-%m')
+plt.gca().xaxis.set_major_formatter(date_format)
+plt.gca().xaxis.set_major_locator(mdates.MonthLocator())
+
 plt.savefig('Recovered_plot.png', bbox_inches='tight')
 plt.close()
 
 # Plot y_w
 plt.figure(figsize=(10, 6))
-plt.plot(t_values, y_w, color='blue')
-plt.xlabel('Time')
+plt.plot(date_range, y_w, color='blue')
+plt.xlabel('Date')
 plt.ylabel('PCR Cycle Threshold')
-plt.title('WPV1 PCR Cycle Threshold vs Time')
+plt.title('WPV1 PCR Cycle Threshold vs Date')
 plt.grid(True)
 plt.gca().invert_yaxis()  # Invert the y-axis
 plt.ylim(60, 20)  # Set y-axis limits from 20 to 60
+
+# Set date format on x-axis
+date_format = mdates.DateFormatter('%Y-%m')
+plt.gca().xaxis.set_major_formatter(date_format)
+plt.gca().xaxis.set_major_locator(mdates.MonthLocator())
+
 plt.savefig('yw_plot.png', bbox_inches='tight')
 plt.close()
 
 # Plot y_o
 plt.figure(figsize=(10, 6))
-plt.plot(t_values, y_o, color='blue')
-plt.xlabel('Time')
+plt.plot(date_range, y_o, color='blue')
+plt.xlabel('Date')
 plt.ylabel('PCR Cycle Threshold')
-plt.title('OPV1 PCR Cycle Threshold vs Time')
+plt.title('OPV1 PCR Cycle Threshold vs Date')
 plt.grid(True)
 plt.gca().invert_yaxis()  # Invert the y-axis
 plt.ylim(60, 20)  # Set y-axis limits from 20 to 60
+
+# Set date format on x-axis
+date_format = mdates.DateFormatter('%Y-%m')
+plt.gca().xaxis.set_major_formatter(date_format)
+plt.gca().xaxis.set_major_locator(mdates.MonthLocator())
+
 plt.savefig('yo_plot.png', bbox_inches='tight')
 plt.close()
